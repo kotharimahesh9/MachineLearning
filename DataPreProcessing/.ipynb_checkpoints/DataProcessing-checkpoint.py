@@ -1,0 +1,370 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "id": "d56af990",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# IMPORT THE LIBRARIES"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "id": "39162080",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "id": "96a1fba5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# IMPORT THE DATASET"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "id": "0217dcad",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[['France' 44.0 72000.0]\n",
+      " ['Spain' 27.0 48000.0]\n",
+      " ['Germany' 30.0 54000.0]\n",
+      " ['Spain' 38.0 61000.0]\n",
+      " ['Germany' 40.0 nan]\n",
+      " ['France' 35.0 58000.0]\n",
+      " ['Spain' nan 52000.0]\n",
+      " ['France' 48.0 79000.0]\n",
+      " ['Germany' 50.0 83000.0]\n",
+      " ['France' 37.0 67000.0]]\n",
+      "0     No\n",
+      "1    Yes\n",
+      "2     No\n",
+      "3     No\n",
+      "4    Yes\n",
+      "5    Yes\n",
+      "6     No\n",
+      "7    Yes\n",
+      "8     No\n",
+      "9    Yes\n",
+      "Name: Purchased, dtype: object\n"
+     ]
+    }
+   ],
+   "source": [
+    "dataset = pd.read_csv(\"Data.csv\")\n",
+    "X = dataset.iloc[:, :-1].values\n",
+    "y = dataset.iloc[:, -1].values\n",
+    "print(X)\n",
+    "print(Y)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1452f897",
+   "metadata": {},
+   "source": [
+    "# Handle Missing Values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "6c2170bc",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[['France' 44.0 72000.0]\n",
+      " ['Spain' 27.0 48000.0]\n",
+      " ['Germany' 30.0 54000.0]\n",
+      " ['Spain' 38.0 61000.0]\n",
+      " ['Germany' 40.0 63777.77777777778]\n",
+      " ['France' 35.0 58000.0]\n",
+      " ['Spain' 38.77777777777778 52000.0]\n",
+      " ['France' 48.0 79000.0]\n",
+      " ['Germany' 50.0 83000.0]\n",
+      " ['France' 37.0 67000.0]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.impute import SimpleImputer \n",
+    "imputer = SimpleImputer(missing_values = np.nan, strategy = 'mean')\n",
+    "imputer.fit(X[:, 1:3])\n",
+    "X[:, 1:3] = imputer.transform(X[:, 1:3])\n",
+    "print(X)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0b69b32e",
+   "metadata": {},
+   "source": [
+    "# One Hot Encoding"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "id": "27afb721",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1.0 0.0 0.0 44.0 72000.0]\n",
+      " [0.0 0.0 1.0 27.0 48000.0]\n",
+      " [0.0 1.0 0.0 30.0 54000.0]\n",
+      " [0.0 0.0 1.0 38.0 61000.0]\n",
+      " [0.0 1.0 0.0 40.0 63777.77777777778]\n",
+      " [1.0 0.0 0.0 35.0 58000.0]\n",
+      " [0.0 0.0 1.0 38.77777777777778 52000.0]\n",
+      " [1.0 0.0 0.0 48.0 79000.0]\n",
+      " [0.0 1.0 0.0 50.0 83000.0]\n",
+      " [1.0 0.0 0.0 37.0 67000.0]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.compose import ColumnTransformer\n",
+    "from sklearn.preprocessing import OneHotEncoder\n",
+    "ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [0])], remainder='passthrough')\n",
+    "X = np.array(ct.fit_transform(X))\n",
+    "print(X)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "id": "539b13ea",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0 1 0 0 1 1 0 1 0 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.preprocessing import LabelEncoder\n",
+    "le = LabelEncoder()\n",
+    "y = le.fit_transform(y)\n",
+    "print(y)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bf15378e",
+   "metadata": {},
+   "source": [
+    "# Test Train Split"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "id": "8c3bcb1e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.model_selection import train_test_split\n",
+    "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "id": "3f9fa502",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[0.0 0.0 1.0 38.77777777777778 52000.0]\n",
+      " [0.0 1.0 0.0 40.0 63777.77777777778]\n",
+      " [1.0 0.0 0.0 44.0 72000.0]\n",
+      " [0.0 0.0 1.0 38.0 61000.0]\n",
+      " [0.0 0.0 1.0 27.0 48000.0]\n",
+      " [1.0 0.0 0.0 48.0 79000.0]\n",
+      " [0.0 1.0 0.0 50.0 83000.0]\n",
+      " [1.0 0.0 0.0 35.0 58000.0]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "id": "a4947340",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[0.0 1.0 0.0 30.0 54000.0]\n",
+      " [1.0 0.0 0.0 37.0 67000.0]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "id": "ed8d247a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0 1 0 0 1 1 0 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "id": "30307782",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(y_test)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "beb80b86",
+   "metadata": {},
+   "source": [
+    "# Feature Scaling"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "id": "fe96d901",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import StandardScaler\n",
+    "sc = StandardScaler()\n",
+    "X_train[:, 3:] = sc.fit_transform(X_train[:, 3:])\n",
+    "X_test[:, 3: ] = sc.transform(X_test[:, 3:])\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "id": "dfd593c6",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[0.0 0.0 1.0 -0.19159184384578545 -1.0781259408412425]\n",
+      " [0.0 1.0 0.0 -0.014117293757057777 -0.07013167641635372]\n",
+      " [1.0 0.0 0.0 0.566708506533324 0.633562432710455]\n",
+      " [0.0 0.0 1.0 -0.30453019390224867 -0.30786617274297867]\n",
+      " [0.0 0.0 1.0 -1.9018011447007988 -1.420463615551582]\n",
+      " [1.0 0.0 0.0 1.1475343068237058 1.232653363453549]\n",
+      " [0.0 1.0 0.0 1.4379472069688968 1.5749910381638885]\n",
+      " [1.0 0.0 0.0 -0.7401495441200351 -0.5646194287757332]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "id": "c5b2d7ae",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[0.0 1.0 0.0 -1.4661817944830124 -0.9069571034860727]\n",
+      " [1.0 0.0 0.0 -0.44973664397484414 0.2056403393225306]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0cc8fa3c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
