@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "065f30fa",
+   "id": "29ac5766",
    "metadata": {},
    "source": [
     "## Import the Libraries"
@@ -11,7 +11,7 @@
   {
    "cell_type": "code",
    "execution_count": 19,
-   "id": "847d3f73",
+   "id": "11ef2a6c",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -23,7 +23,7 @@
   {
    "cell_type": "code",
    "execution_count": 20,
-   "id": "9fdd37d2",
+   "id": "baf8603f",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -34,7 +34,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "293117ee",
+   "id": "33c0946f",
    "metadata": {},
    "source": [
     "## Split the data into Train and Test sets"
@@ -43,7 +43,7 @@
   {
    "cell_type": "code",
    "execution_count": 21,
-   "id": "0d924636",
+   "id": "3001cd5f",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -53,7 +53,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "b70e8dd8",
+   "id": "6e536677",
    "metadata": {},
    "source": [
     "## Do Feature Scaling"
@@ -62,7 +62,7 @@
   {
    "cell_type": "code",
    "execution_count": 22,
-   "id": "f456f994",
+   "id": "c4e75bf8",
    "metadata": {},
    "outputs": [
     {
@@ -182,7 +182,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "0ee4f23f",
+   "id": "9a3a01fc",
    "metadata": {},
    "source": [
     "## Train the Logistic Regression Model "
@@ -191,7 +191,7 @@
   {
    "cell_type": "code",
    "execution_count": 23,
-   "id": "fc31e281",
+   "id": "ec510ddb",
    "metadata": {},
    "outputs": [
     {
@@ -217,7 +217,7 @@
   {
    "cell_type": "code",
    "execution_count": 28,
-   "id": "ff3a5290",
+   "id": "8665c603",
    "metadata": {},
    "outputs": [
     {
@@ -236,7 +236,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "d69da3dc",
+   "id": "97f3602a",
    "metadata": {},
    "source": [
     "## Test the Model"
@@ -245,7 +245,7 @@
   {
    "cell_type": "code",
    "execution_count": 34,
-   "id": "b8060070",
+   "id": "93197a95",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -257,7 +257,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "09811544",
+   "id": "ebf26c21",
    "metadata": {},
    "source": [
     "## Make the confusion Matrix"
@@ -266,7 +266,7 @@
   {
    "cell_type": "code",
    "execution_count": 38,
-   "id": "27a7f8e9",
+   "id": "8ae8b873",
    "metadata": {},
    "outputs": [
     {
